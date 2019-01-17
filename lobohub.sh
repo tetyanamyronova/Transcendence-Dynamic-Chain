@@ -6,7 +6,7 @@ NC='\033[0m'
 IP4COUNT=$(find /root/.transcendence_* -maxdepth 0 -type d | wc -l)
 DELETED="$(cat /root/bin/deleted | wc -l)"
 ALIASES="$(find /root/.transcendence_* -maxdepth 0 -type d | cut -c22-)"
-face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}')"
+face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}' | head -n1)"
 if [[ $(lsb_release -d) != *16.04* ]]; then
   echo -e "${RED}You are not running Ubuntu 16.04. Installation is cancelled.${NC}"
   exit 1
@@ -237,7 +237,7 @@ RPCPORT=$(($RPCPORTT+$COUNTER))
   echo "externalip=$IP4" >> transcendence.conf_TEMP
   echo "masternodeaddr=$IP4:$PORT" >> transcendence.conf_TEMP
   echo "masternodeprivkey=$PRIVKEY" >> transcendence.conf_TEMP
-  echo "addnode=127.0.0.1" >> transcendence.conf_TEMP
+  
 
   mv transcendence.conf_TEMP $CONF_DIR/transcendence.conf
   echo ""
@@ -323,7 +323,6 @@ done
 fi
 echo ""
 echo -e "${RED}Please do not set maxconnections lower than 48 or your node may not receive rewards as often.${NC}"
-echo -e "${RED}If you get "timeoffset" = -1 when checking for node errors, it means your maxconnections is too low.${NC}"
 echo ""
 echo "Commands:"
 echo "${ALIAS}_start"
