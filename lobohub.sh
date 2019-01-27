@@ -65,6 +65,7 @@ chmod +x /usr/local/bin/transcendence*
 rm Linux.zip
 touch /root/bin/v1.1.0.0c
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}"
+echo ""
 fi
 fi
 echo -e "${RED}This script is not compatbile with older versions of it by default. Use it on a fresh VPS or disable bind manually to enable backwards compatibility.${NC}"
