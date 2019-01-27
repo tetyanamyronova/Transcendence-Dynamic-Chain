@@ -18,6 +18,7 @@ fi
 if [ -f "/usr/local/bin/transcendenced" ]
 then
 if [ ! -f "/root/bin/v1.1.0.0c" ]
+then
 echo -e "${GREEN}Please wait, updating wallet.${NC}:"
 rm /usr/local/bin/transcendence*
 wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0c/Linux.zip -O /root/Linux.zip 
