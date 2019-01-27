@@ -20,11 +20,10 @@ then
 if [ ! -f "/root/bin/v1.1.0.0c" ]
 echo -e "${GREEN}Please wait, updating wallet.${NC}:"
 rm /usr/local/bin/transcendence*
-wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0/Linux.zip -O /root/Linux.zip ##needs updated wallet
-unzip Linux.zip 
-chmod +x Linux/bin/* 
-mv  Linux/bin/* /usr/local/bin
-rm -rf Linux.zip Windows Linux Mac
+wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0c/Linux.zip -O /root/Linux.zip 
+unzip Linux.zip -d /usr/local/bin 
+chmod +x /usr/local/bin/transcendence*
+rm Linux.zip
 touch /root/bin/v1.1.0.0c
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}:"
 fi
@@ -37,11 +36,11 @@ After=network.target
  [Service]
 User=root
 Group=root
- Type=forking
+Type=forking
 #PIDFile=/root/.transcendence_$ALIAS/transcendenced.pid
- ExecStart=/root/bin/transcendenced_$ALIAS.sh
+ExecStart=/root/bin/transcendenced_$ALIAS.sh
 ExecStop=/root/bin/transcendence-cli_$ALIAS.sh stop
- Restart=always
+Restart=always
 PrivateTmp=true
 TimeoutStopSec=60s
 TimeoutStartSec=10s
@@ -165,6 +164,7 @@ then
  if [ ! -f Linux.zip ]
   then
   wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0/Linux.zip -O /root/Linux.zip
+  touch /root/bin/v1.1.0.0c
  fi
   unzip Linux.zip 
   chmod +x Linux/bin/* 
