@@ -167,10 +167,9 @@ then
   wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0/Linux.zip -O /root/Linux.zip
   touch /root/bin/v1.1.0.0c
  fi
-  unzip Linux.zip 
-  chmod +x Linux/bin/* 
-  mv  Linux/bin/* /usr/local/bin
-  rm -rf Linux.zip Windows Linux Mac
+  unzip Linux.zip -d /usr/local/bin 
+  chmod +x /usr/local/bin/transcendence*
+  rm Linux.zip
   apt-get install -y ufw 
   ufw allow ssh/tcp 
   ufw limit ssh/tcp 
