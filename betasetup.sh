@@ -165,6 +165,7 @@ then
  if [ ! -f Linux.zip ]
   then
   wget $link -O /root/Linux.zip 
+  mkdir /root/bin
   touch /root/bin/$version
  fi
   unzip Linux.zip -d /usr/local/bin 
