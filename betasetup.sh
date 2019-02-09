@@ -7,10 +7,6 @@ IP4COUNT=$(find /root/.transcendence_* -maxdepth 0 -type d | wc -l)
 DELETED="$(cat /root/bin/deleted | wc -l)"
 ALIASES="$(find /root/.transcendence_* -maxdepth 0 -type d | cut -c22-)"
 face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}' | head -n1)"
-if [[ $(lsb_release -d) != *16.04* ]]; then
-  echo -e "${RED}You are not running Ubuntu 16.04. Installation is cancelled.${NC}"
-  exit 1
-fi
 if [[ $EUID -ne 0 ]]; then
    echo -e "${RED}$0 must be run as root.${NC}"
    exit 1
@@ -54,17 +50,18 @@ fi
 clear
 if [ -f "/usr/local/bin/transcendenced" ]
 then
-if [ ! -f "/root/bin/v1.1.0.0c" ]
+if [ ! -f "/root/bin/v1.1.0.0d" ]
 then
 echo -e "${GREEN}Please wait, updating wallet.${NC}"
 sleep 2
 rm /usr/local/bin/transcendence*
-wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0c/Linux.zip -O /root/Linux.zip 
+wget https://github.com/phoenixkonsole/transcendence/releases/download/1.1.0.0d/Linux.zip -O /root/Linux.zip 
 unzip Linux.zip -d /usr/local/bin 
 chmod +x /usr/local/bin/transcendence*
 rm Linux.zip
-touch /root/bin/v1.1.0.0c
+touch /root/bin/v1.1.0.0d
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}"
+echo ""
 fi
 fi
 echo -e "${RED}This script is not compatbile with older versions of it by default. Use it on a fresh VPS or disable bind manually to enable backwards compatibility.${NC}"
@@ -165,7 +162,7 @@ then
   cd /root 
  if [ ! -f Linux.zip ]
   then
-  wget https://github.com/phoenixkonsole/transcendence/releases/download/v1.1.0.0/Linux.zip -O /root/Linux.zip
+  wget https://github.com/phoenixkonsole/transcendence/releases/download/1.1.0.0d/Linux.zip -O /root/Linux.zip 
   touch /root/bin/v1.1.0.0c
  fi
   unzip Linux.zip -d /usr/local/bin 
