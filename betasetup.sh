@@ -41,6 +41,8 @@ EOF
   systemctl start transcendenced$ALIAS.service
 }
 IP4=$(curl -s4 api.ipify.org)
+version=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/current)
+link=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/download)
 perl -i -ne 'print if ! $a{$_}++' /etc/network/interfaces
 if [ ! -f "/usr/local/bin/transcendenced" ]; then
  DOSETUP="y"
@@ -50,16 +52,16 @@ fi
 clear
 if [ -f "/usr/local/bin/transcendenced" ]
 then
-if [ ! -f "/root/bin/v1.1.0.0d" ]
+if [ ! -f "/root/bin/$version" ]
 then
 echo -e "${GREEN}Please wait, updating wallet.${NC}"
 sleep 2
 rm /usr/local/bin/transcendence*
-wget https://github.com/phoenixkonsole/transcendence/releases/download/1.1.0.0d/Linux.zip -O /root/Linux.zip 
+wget $link -O /root/Linux.zip 
 unzip Linux.zip -d /usr/local/bin 
 chmod +x /usr/local/bin/transcendence*
 rm Linux.zip
-touch /root/bin/v1.1.0.0d
+touch /root/bin/$version
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}"
 echo ""
 fi
@@ -162,8 +164,8 @@ then
   cd /root 
  if [ ! -f Linux.zip ]
   then
-  wget https://github.com/phoenixkonsole/transcendence/releases/download/1.1.0.0d/Linux.zip -O /root/Linux.zip 
-  touch /root/bin/v1.1.0.0c
+  wget $link -O /root/Linux.zip 
+  touch /root/bin/$version
  fi
   unzip Linux.zip -d /usr/local/bin 
   chmod +x /usr/local/bin/transcendence*
