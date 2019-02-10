@@ -66,8 +66,6 @@ echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS wh
 echo ""
 fi
 fi
-echo -e "${RED}This script is not compatbile with older versions of it by default. Use it on a fresh VPS or disable bind manually to enable backwards compatibility.${NC}"
-echo ""
 echo "1 - Create new nodes"
 echo "2 - Remove an existing node"
 echo "3 - List aliases"
