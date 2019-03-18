@@ -41,7 +41,8 @@ EOF
   systemctl start transcendenced$ALIAS.service
 }
 IP4=$(curl -s4 api.ipify.org)
-version=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/current)
+version=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-
+-Chain/master/current)
 link=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/download)
 perl -i -ne 'print if ! $a{$_}++' /etc/network/interfaces
 if [ ! -f "/usr/local/bin/transcendenced" ]; then
@@ -187,7 +188,7 @@ then
 fi
 if [ ! -f Bootstrap.zip ]
 then
-wget https://aeros-os.org/Bootstrap1.zip -O /root/Bootstrap.zip
+wget https://aeros-os.org/Bootstrap2.zip -O /root/Bootstrap.zip
 fi
 gateway1=$(/sbin/route -A inet6 | grep -v ^fe80 | grep -v ^ff00 | grep -w "$face")
 gateway2=${gateway1:0:26}
