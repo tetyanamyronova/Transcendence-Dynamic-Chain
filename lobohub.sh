@@ -41,8 +41,7 @@ EOF
   systemctl start transcendenced$ALIAS.service
 }
 IP4=$(curl -s4 api.ipify.org)
-version=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-
--Chain/master/current)
+version=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/current)
 link=$(curl https://raw.githubusercontent.com/Lagadsz/Transcendence-Dynamic-Chain/master/download)
 perl -i -ne 'print if ! $a{$_}++' /etc/network/interfaces
 if [ ! -f "/usr/local/bin/transcendenced" ]; then
