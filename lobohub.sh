@@ -50,8 +50,6 @@ else
  DOSETUP="n"
 fi
 clear
-if [ -f "/usr/local/bin/transcendenced" ]
-then
 if [ ! -f "/root/bin/$version" ]
 then
 echo -e "${GREEN}Please wait, updating wallet.${NC}"
@@ -64,7 +62,6 @@ rm Linux.zip
 touch /root/bin/$version
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}"
 echo ""
-fi
 fi
 echo "1 - Create new nodes"
 echo "2 - Remove an existing node"
