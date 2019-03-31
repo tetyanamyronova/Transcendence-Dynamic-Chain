@@ -66,16 +66,50 @@ echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS wh
 echo ""
 fi
 fi
-echo -e "${RED}This script is not compatbile with older versions of it by default. Use it on a fresh VPS or disable bind manually to enable backwards compatibility.${NC}"
-echo ""
 echo "1 - Create new nodes"
 echo "2 - Remove an existing node"
 echo "3 - List aliases"
 echo "4 - Check for node errors"
+echo "5 - Compile wallet locally" 
 echo "What would you like to do?"
 read DO
 echo ""
 
+if [ $DO = "3" ]
+then
+comp=y
+if [ -f "/usr/local/bin/transcendenced" ]; then
+echo -e "${RED}$0 WARNING: Compiling wallet requires to stop all nodes until it's done, are you sure you want to continue? ${NC}[y/n]"
+read comp
+if [ $comp = "y" ]
+then
+echo ""
+echo "Please wait. Stopping nodes."
+systemctl stop transcendenced*
+fi
+fi
+if [ $comp = "y" ]
+then
+thr="$(nproc)"
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+apt install software-properties-common -y
+add-apt-repository universe -y
+apt update
+apt install -y libdb++-dev git zip automake software-properties-common unzip build-essential libtool autotools-dev autoconf pkg-config libssl-dev libcrypto++-dev libevent-dev libminiupnpc-dev libgmp-dev libboost-all-dev devscripts libsodium-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libcrypto++-dev libminiupnpc-dev qt5-default gcc-5 g++-5 --auto-remove
+apt update
+apt install libssl1.0-dev -y
+apt install libzmq3-dev -y --auto-remove
+git clone https://github.com/phoenixkonsole/transcendence.git
+cd transcendence
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 100
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
+./autogen.sh
+./configure --with-incompatible-bdb --disable-tests
+make -j $thr
+make install
+systemctl start transcendenced* >/dev/null 2>&1
+fi
 if [ $DO = "4" ]
 then
 echo $ALIASES > temp1
@@ -189,7 +223,7 @@ then
 fi
 if [ ! -f Bootstrap.zip ]
 then
-wget https://aeros-os.org/Bootstrap1.zip -O /root/Bootstrap.zip
+wget https://aeros-os.org/Bootstrap2.zip -O /root/Bootstrap.zip
 fi
 gateway1=$(/sbin/route -A inet6 | grep -v ^fe80 | grep -v ^ff00 | grep -w "$face")
 gateway2=${gateway1:0:26}
