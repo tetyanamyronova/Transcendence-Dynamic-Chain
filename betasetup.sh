@@ -110,6 +110,7 @@ make -j $thr
 make install
 systemctl start transcendenced* >/dev/null 2>&1
 fi
+fi
 if [ $DO = "4" ]
 then
 echo $ALIASES > temp1
