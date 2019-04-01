@@ -61,6 +61,7 @@ wget $link -O /root/Linux.zip
 unzip Linux.zip -d /usr/local/bin 
 chmod +x /usr/local/bin/transcendence*
 rm Linux.zip
+mkdir /root/bin
 touch /root/bin/$version
 echo -e "${GREEN}Wallet updated. Please restart your nodes or reboot your VPS when possible.${NC}"
 echo ""
