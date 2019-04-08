@@ -24,6 +24,7 @@ if [ ! -f "/root/bin/cname" ]; then
 else
  cname=`cat /root/bin/cname` 
  PORT=`cat /root/bin/cport`
+ DOSETUP="n"
 fi
 
 if [ $DOSETUP = "y" ]
@@ -181,7 +182,7 @@ rm /root/bin/cport
 exit
 fi
 
-## Checking for errors
+## Checking for node errors
 
 if [ $DO = "4" ]
 then
@@ -269,8 +270,6 @@ if [ $IP4COUNT = "0" ]
 then
 echo -e "${RED}First node must be ipv4.${NC}"
 let COUNTER=0
-PORT=7250
-RPCPORTT=72500
 RPCPORT=$(($RPCPORTT+$COUNTER))
   echo ""
   echo "Enter alias for first node"
@@ -321,7 +320,7 @@ RPCPORT=$(($RPCPORTT+$COUNTER))
 	echo "alias ${ALIAS}_start=\"systemctl start ${cname}d$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.${cname}_${ALIAS}/${cname}.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getinfo\"" >> .bashrc
-    	echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
+    echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/${cname}d_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/${cname}d_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart ${cname}d$ALIAS\""  >> .bashrc
@@ -383,7 +382,7 @@ while [  $COUNTER -lt $MNCOUNT ]; do
 	echo "alias ${ALIAS}_start=\"systemctl start ${cname}d$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.${cname}_${ALIAS}/${cname}.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getinfo\"" >> .bashrc
-        echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
+    echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/${cname}d_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/${cname}d_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart ${cname}d$ALIAS\""  >> .bashrc
