@@ -22,7 +22,8 @@ fi
 if [ ! -f "/root/bin/cname" ]; then
  DOSETUP="y"
 else
- DOSETUP="n"
+ cname=`cat /root/bin/cname` 
+ PORT=`cat /root/bin/cport`
 fi
 
 if [ $DOSETUP = "y" ]
@@ -44,10 +45,12 @@ then
   cliname1=`grep 'BITCOIN_CLI_NAME' configure.ac | head -n 1`
   cliname=${cliname1##*=}
   cname=${cliname::-4}
+  echo $cname > /root/bin/cname
   
-  portline=`grep '127.0.0.1' ~/transcendence/doc/guide-startmany.md`
+  portline=`grep '127.0.0.1' doc/guide-startmany.md`
   PORT=${portline:15:5}
-  
+  echo $PORT > /root/bin/cport
+
   ## Installing pre-requisites
  
   echo -e "Installing ${GREEN}${cname} dependencies${NC}. Please wait."
@@ -174,6 +177,7 @@ echo ""
 if [ $DO = "5" ]
 then
 rm /root/bin/cname
+rm /root/bin/cport
 exit
 fi
 
@@ -379,7 +383,7 @@ while [  $COUNTER -lt $MNCOUNT ]; do
 	echo "alias ${ALIAS}_start=\"systemctl start ${cname}d$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.${cname}_${ALIAS}/${cname}.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getinfo\"" >> .bashrc
-    echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
+        echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/${cname}d_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/${cname}d_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart ${cname}d$ALIAS\""  >> .bashrc
