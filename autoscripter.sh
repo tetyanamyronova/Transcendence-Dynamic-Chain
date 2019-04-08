@@ -38,6 +38,7 @@ then
   foldername1=${github::-4}
   foldername=${foldername1##*/}
 
+  git clone $git
   cd $foldername
   cliname1=${cat configure.ac | grep "BITCOIN_CLI_NAME" | head -n 1}
   cliname=${cliname1##*=}
@@ -77,8 +78,7 @@ then
   ## Preparing and building
   
   
-  git clone $git
-  cd $foldername  
+   
   chmod +x */*/*
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests
