@@ -38,9 +38,10 @@ then
   foldername1=${github::-4}
   foldername=${foldername1##*/}
 
-  git clone $git
+  git clone $github
   cd $foldername
-  cliname1=${cat configure.ac | grep "BITCOIN_CLI_NAME" | head -n 1}
+  
+  cliname1="$(cat configure.ac | grep "BITCOIN_CLI_NAME" | head -n 1)"
   cliname=${cliname1##*=}
   cname=${cliname::-4}
   
@@ -379,7 +380,7 @@ while [  $COUNTER -lt $MNCOUNT ]; do
 	echo "alias ${ALIAS}_start=\"systemctl start ${cname}d$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.${cname}_${ALIAS}/${cname}.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getinfo\"" >> .bashrc
-        echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
+    echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/${cname}d_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/${cname}d_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart ${cname}d$ALIAS\""  >> .bashrc
