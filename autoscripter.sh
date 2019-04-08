@@ -6,12 +6,12 @@ NC='\033[0m'
 
 ## Error checks
 
-perl -i -ne 'print if ! $a{$_}++' /etc/network/interfaces
-
 if [[ $EUID -ne 0 ]]; then
    echo -e "${RED}$0 must be run as root.${NC}"
    exit 1
 fi
+
+perl -i -ne 'print if ! $a{$_}++' /etc/network/interfaces
 
 if [ ! -d "/root/bin" ]; then
 mkdir /root/bin
@@ -80,8 +80,6 @@ then
   
   ## Preparing and building
   
-  
-   
   chmod +x */*/*
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests
@@ -113,8 +111,7 @@ ALIASES="$(find /root/.${cname}_* -maxdepth 0 -type d | cut -c22-)"
 face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}' | head -n1)"
 IP4=$(curl -s4 api.ipify.org)
 
-PORT=
-RPCPORTT=$((RPCPORTT*10))
+RPCPORTT=$((PORT*10))
 thr="$(nproc)"
 gateway1=$(/sbin/route -A inet6 | grep -v ^fe80 | grep -v ^ff00 | grep -w "$face")
 gateway2=${gateway1:0:26}
