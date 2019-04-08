@@ -67,7 +67,6 @@ then
   swapon /var/swap.img 
   free -m
   echo "/var/swap.img none swap sw 0 0" >> /etc/fstab
-  cd /root 
   
   ## Compatibility issues
   
