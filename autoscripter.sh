@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 cd ~
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -41,9 +41,12 @@ then
   git clone $github
   cd $foldername
   
-  cliname1="$(cat configure.ac | grep "BITCOIN_CLI_NAME" | head -n 1)"
+  cliname1=`grep 'BITCOIN_CLI_NAME' configure.ac | head -n 1`
   cliname=${cliname1##*=}
   cname=${cliname::-4}
+  
+  portline=`grep '127.0.0.1' ~/transcendence/doc/guide-startmany.md`
+  PORT=${portline:15:5}
   
   ## Installing pre-requisites
  
