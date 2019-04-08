@@ -17,14 +17,6 @@ if [ ! -d "/root/bin" ]; then
 mkdir /root/bin
 fi
 
-## Constants
-
-IP4COUNT=$(find /root/.${cname}_* -maxdepth 0 -type d | wc -l)
-DELETED="$(cat /root/bin/deleted${cname} | wc -l)"
-ALIASES="$(find /root/.${cname}_* -maxdepth 0 -type d | cut -c22-)"
-face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}' | head -n1)"
-IP4=$(curl -s4 api.ipify.org)
-
 ## Setup
 
 if [ ! -f "/root/bin/cname" ]; then
@@ -46,6 +38,10 @@ then
   foldername1=${github::-4}
   foldername=${foldername1##*/}
 
+  cd $foldername
+  cliname1=${cat configure.ac | grep "BITCOIN_CLI_NAME" | head -n 1}
+  cliname=${cliname1##*=}
+  cname=${cliname::-4}
   
   ## Installing pre-requisites
  
@@ -106,7 +102,13 @@ then
   echo 'vm.vfs_cache_pressure=200' | tee -a /etc/sysctl.conf
 fi
 
+## Constants
 
+IP4COUNT=$(find /root/.${cname}_* -maxdepth 0 -type d | wc -l)
+DELETED="$(cat /root/bin/deleted${cname} | wc -l)"
+ALIASES="$(find /root/.${cname}_* -maxdepth 0 -type d | cut -c22-)"
+face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical name: /g' | awk '{print $3}' | head -n1)"
+IP4=$(curl -s4 api.ipify.org)
 
 PORT=
 RPCPORTT=$((RPCPORTT*10))
@@ -377,7 +379,7 @@ while [  $COUNTER -lt $MNCOUNT ]; do
 	echo "alias ${ALIAS}_start=\"systemctl start ${cname}d$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.${cname}_${ALIAS}/${cname}.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getinfo\"" >> .bashrc
-  echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
+        echo "alias ${ALIAS}_getpeerinfo=\"${cname}-cli -datadir=/root/.${cname}_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/${cname}d_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/${cname}d_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart ${cname}d$ALIAS\""  >> .bashrc
