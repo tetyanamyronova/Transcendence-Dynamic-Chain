@@ -46,11 +46,10 @@ then
   cliname1=`grep 'BITCOIN_CLI_NAME' configure.ac | head -n 1`
   cliname=${cliname1##*=}
   cname=${cliname::-4}
-  echo $cname > /root/bin/cname
   
-  portline=`grep '127.0.0.1' doc/guide-startmany.md`
-  PORT=${portline:15:5}
-  echo $PORT > /root/bin/cport
+  
+  PORT=`grep 'nDefaultPort' src/chainparams.cpp | head -n 1 | tr -d -c 0-9`
+  
 
   ## Installing pre-requisites
  
@@ -61,7 +60,8 @@ then
   add-apt-repository universe -y
   apt update
   apt install -y zip unzip bc curl nano lshw ufw gawk libdb++-dev git zip automake software-properties-common unzip build-essential libtool autotools-dev autoconf pkg-config libssl-dev libcrypto++-dev libevent-dev libminiupnpc-dev libgmp-dev libboost-all-dev devscripts libsodium-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libcrypto++-dev libminiupnpc-dev qt5-default gcc-5 g++-5 --auto-remove
-
+  thr="$(nproc)"
+  
   ## Creating swap
 
   echo -e "${RED}Creating swap. This may take a while.${NC}"
@@ -91,7 +91,9 @@ then
   make install
   
   ## Final configs
-
+  
+  echo $cname > /root/bin/cname
+  echo $PORT > /root/bin/cport   
   ufw allow ssh/tcp 
   ufw limit ssh/tcp 
   ufw logging on
@@ -116,7 +118,6 @@ face="$(lshw -C network | grep "logical name:" | sed -e 's/logical name:/logical
 IP4=$(curl -s4 api.ipify.org)
 
 RPCPORTT=$((PORT*10))
-thr="$(nproc)"
 gateway1=$(/sbin/route -A inet6 | grep -v ^fe80 | grep -v ^ff00 | grep -w "$face")
 gateway2=${gateway1:0:26}
 gateway3="$(echo -e "${gateway2}" | tr -d '[:space:]')"
