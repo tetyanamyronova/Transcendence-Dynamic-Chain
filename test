@@ -165,7 +165,7 @@ then
   cd emp
   chmod +x */*/*
   ./autogen.sh
-  ./configure --with-incompatible-bdb --disable-tests
+  ./configure --with-incompatible-bdb --disable-tests --disable-gui
   make -j $thr
   make install
   
