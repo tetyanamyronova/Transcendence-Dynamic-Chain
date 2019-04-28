@@ -220,8 +220,8 @@ RPCPORT=$(($RPCPORTT+$COUNTER))
 	echo "alias ${ALIAS}_stop=\"systemctl stop empirecoind$ALIAS\"" >> .bashrc
 	echo "alias ${ALIAS}_start=\"systemctl start empirecoind$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.empirecoincwf_${ALIAS}/empirecoin.conf\""  >> .bashrc
-	echo "alias ${ALIAS}_getinfo=\"empirecoin-cli -datadir=/root/'.empirecoincwf_${ALIAS} getinfo\"" >> .bashrc
-    echo "alias ${ALIAS}_getpeerinfo=\"empirecoin-cli -datadir=/root/.empirecoincwf_${ALIAS} getpeerinfo\"" >> .bashrc
+	echo "alias ${ALIAS}_getinfo=\"empirecoin-cli -datadir=/root/.empirecoincwf_${ALIAS} getinfo\"" >> .bashrc
+        echo "alias ${ALIAS}_getpeerinfo=\"empirecoin-cli -datadir=/root/.empirecoincwf_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/empirecoind_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/empirecoind_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart empirecoind$ALIAS\""  >> .bashrc
