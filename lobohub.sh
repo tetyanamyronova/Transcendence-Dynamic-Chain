@@ -171,6 +171,10 @@ then
 echo -e "${GREEN}Compiling wallet, this may take some time.${NC}"
 sleep 2
 systemctl stop transcendenced*
+
+if [ ! -f "/root/bin/depc" ]
+then
+
 ## Installing pre-requisites
 
 apt install -y zip unzip bc curl nano lshw ufw gawk libdb++-dev git zip automake software-properties-common unzip build-essential libtool autotools-dev autoconf pkg-config libssl-dev libcrypto++-dev libevent-dev libminiupnpc-dev libgmp-dev libboost-all-dev devscripts libsodium-dev libprotobuf-dev protobuf-compiler libcrypto++-dev libminiupnpc-dev gcc-5 g++-5 --auto-remove
@@ -185,6 +189,9 @@ thr="$(nproc)"
   apt install libzmq3-dev -y --auto-remove
   update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 100
   update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
+  touch /root/bin/depc
+
+fi
 
 ## Preparing and building
 
@@ -447,7 +454,7 @@ do
 	echo "alias ${ALIAS}_start=\"systemctl start transcendenced$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.transcendence_${ALIAS}/transcendence.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getinfo\"" >> .bashrc
-        echo "alias ${ALIAS}_getpeerinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getpeerinfo\"" >> .bashrc
+	echo "alias ${ALIAS}_getpeerinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/transcendenced_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/transcendenced_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart transcendenced$ALIAS\""  >> .bashrc
