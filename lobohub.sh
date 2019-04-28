@@ -21,9 +21,38 @@ fi
 
 if [ ! -f "/usr/local/bin/transcendenced" ]
 then
- DOSETUP="y"
-else
- DOSETUP="n"
+  echo -e "Installing ${GREEN}Transcendence dependencies${NC}. Please wait."
+  apt update 
+  apt -y upgrade
+  apt update
+  apt install -y zip unzip bc curl nano lshw gawk ufw
+  
+  ## Checking for Swap
+  
+  if [ ! -f /var/swap.img ]
+  then
+  echo -e "${RED}Creating swap. This may take a while.${NC}"
+  dd if=/dev/zero of=/var/swap.img bs=2048 count=1M
+  chmod 600 /var/swap.img
+  mkswap /var/swap.img 
+  swapon /var/swap.img 
+  free -m
+  echo "/var/swap.img none swap sw 0 0" >> /etc/fstab
+  fi
+  
+  ufw allow ssh/tcp
+  ufw limit ssh/tcp
+  ufw logging on
+  echo "y" | ufw enable 
+  ufw allow 22123
+  echo 'export PATH=~/bin:$PATH' > ~/.bash_aliases
+  source ~/.bashrc
+  echo ""
+  cd
+  sysctl vm.swappiness=10
+  sysctl vm.vfs_cache_pressure=200
+  echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+  echo 'vm.vfs_cache_pressure=200' | tee -a /etc/sysctl.conf
 fi
 
 ## Constants
@@ -112,6 +141,7 @@ echo "1 - Create new nodes"
 echo "2 - Remove an existing node"
 echo "3 - List aliases"
 echo "4 - Check for node errors"
+echo "5 - Compile wallet locally"
 echo "What would you like to do?"
 read DO
 echo ""
@@ -125,9 +155,40 @@ echo ""
 echo "1 - Create new nodes"
 echo "2 - Remove an existing node"
 echo "4 - Check for node errors"
+echo "5 - Compile wallet locally (optional)"
 echo "What would you like to do?"
 read DO
 echo ""
+fi
+
+## Compiling wallet
+
+if [ $DO = "5" ]
+then
+echo -e "${GREEN}Compiling wallet, this may take some time.${NC}"
+
+## Installing pre-requisites
+
+apt install -y zip unzip bc curl nano lshw ufw gawk libdb++-dev git zip automake software-properties-common unzip build-essential libtool autotools-dev autoconf pkg-config libssl-dev libcrypto++-dev libevent-dev libminiupnpc-dev libgmp-dev libboost-all-dev devscripts libsodium-dev libprotobuf-dev protobuf-compiler libcrypto++-dev libminiupnpc-dev gcc-5 g++-5 --auto-remove
+thr="$(nproc)"
+
+## Compatibility issues
+  
+  export LC_CTYPE=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  apt update
+  apt install libssl1.0-dev -y
+  apt install libzmq3-dev -y --auto-remove
+  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 100
+  update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
+
+## Preparing and building
+  
+  ./autogen.sh
+  ./configure --with-incompatible-bdb --disable-tests --without-gui
+  make -j $thr
+  make install
+
 fi
 
 ## Checking for node errors
@@ -216,50 +277,16 @@ echo "Enter max connections value"
 read MAXC
 fi
 
-if [ $DOSETUP = "y" ]
+if [ ! -f "/usr/local/bin/transcendenced" ]
 then
-  echo -e "Installing ${GREEN}Transcendence dependencies${NC}. Please wait."
-  apt update 
-  apt -y upgrade
-  apt update
-  apt install -y zip unzip bc curl nano lshw gawk ufw
-  
-  ## Checking for Swap
-  
-  if [ ! -f /var/swap.img ]
-  then
-  echo -e "${RED}Creating swap. This may take a while.${NC}"
-  dd if=/dev/zero of=/var/swap.img bs=2048 count=1M
-  chmod 600 /var/swap.img
-  mkswap /var/swap.img 
-  swapon /var/swap.img 
-  free -m
-  echo "/var/swap.img none swap sw 0 0" >> /etc/fstab
-  fi
-  
   ## Downloading and installing wallet 
-  
+  echo -e "${GREEN}Downloading precompiled wallet${NC}"
   wget $link -O /root/Linux.zip 
   mkdir /root/bin
   touch /root/bin/$version
   unzip Linux.zip -d /usr/local/bin 
   chmod +x /usr/local/bin/transcendence*
-  rm Linux.zip
-  
-  ufw allow ssh/tcp
-  ufw limit ssh/tcp
-  ufw logging on
-  echo "y" | ufw enable 
-  ufw allow 22123
-  echo 'export PATH=~/bin:$PATH' > ~/.bash_aliases
-  source ~/.bashrc
-  echo ""
-  cd
-  sysctl vm.swappiness=10
-  sysctl vm.vfs_cache_pressure=200
-  echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
-  echo 'vm.vfs_cache_pressure=200' | tee -a /etc/sysctl.conf
-  
+  rm Linux.zip  
 fi
 
 ## Downloading bootstrap
@@ -332,7 +359,7 @@ RPCPORT=$(($RPCPORTT+$COUNTER))
 	echo "alias ${ALIAS}_start=\"systemctl start transcendenced$ALIAS\""  >> .bashrc
 	echo "alias ${ALIAS}_config=\"nano /root/.transcendence_${ALIAS}/transcendence.conf\""  >> .bashrc
 	echo "alias ${ALIAS}_getinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getinfo\"" >> .bashrc
-        echo "alias ${ALIAS}_getpeerinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getpeerinfo\"" >> .bashrc
+	echo "alias ${ALIAS}_getpeerinfo=\"transcendence-cli -datadir=/root/.transcendence_${ALIAS} getpeerinfo\"" >> .bashrc
 	echo "alias ${ALIAS}_resync=\"/root/bin/transcendenced_${ALIAS}.sh -resync\"" >> .bashrc
 	echo "alias ${ALIAS}_reindex=\"/root/bin/transcendenced_${ALIAS}.sh -reindex\"" >> .bashrc
 	echo "alias ${ALIAS}_restart=\"systemctl restart transcendenced$ALIAS\""  >> .bashrc
