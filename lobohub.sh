@@ -193,6 +193,8 @@ thr="$(nproc)"
   ./configure --with-incompatible-bdb --disable-tests --without-gui
   make -j $thr
   make install
+  touch /root/bin/$version
+  
 systemctl start transcendenced*
 
 fi
