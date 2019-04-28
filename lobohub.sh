@@ -169,7 +169,7 @@ fi
 if [ $DO = "5" ]
 then
 echo -e "${GREEN}Compiling wallet, this may take some time.${NC}"
-
+sleep 2
 ## Installing pre-requisites
 
 apt install -y zip unzip bc curl nano lshw ufw gawk libdb++-dev git zip automake software-properties-common unzip build-essential libtool autotools-dev autoconf pkg-config libssl-dev libcrypto++-dev libevent-dev libminiupnpc-dev libgmp-dev libboost-all-dev devscripts libsodium-dev libprotobuf-dev protobuf-compiler libcrypto++-dev libminiupnpc-dev gcc-5 g++-5 --auto-remove
