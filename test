@@ -162,7 +162,7 @@ then
   ## Preparing and building
   
   git clone https://github.com/EmpireCryptoNetwork/emp.git
-  cd EmpireCryptoNetwork
+  cd emp
   chmod +x */*/*
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests
