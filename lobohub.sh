@@ -21,6 +21,7 @@ fi
 
 if [ ! -f "/usr/local/bin/transcendenced" ]
 then
+  clear
   echo -e "Installing ${GREEN}Transcendence dependencies${NC}. Please wait."
   apt update 
   apt -y upgrade
