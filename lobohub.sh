@@ -188,6 +188,7 @@ thr="$(nproc)"
 
 ## Preparing and building
   
+  cd transcendence
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests --without-gui
   make -j $thr
