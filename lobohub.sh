@@ -19,7 +19,7 @@ fi
 
 ## Setup
 
-if [ ! -f "/usr/local/bin/transcendenced" ]
+if [ ! -f "/root/bin/dep" ]
 then
   clear
   echo -e "Installing ${GREEN}Transcendence dependencies${NC}. Please wait."
@@ -55,6 +55,7 @@ then
   sysctl vm.vfs_cache_pressure=200
   echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
   echo 'vm.vfs_cache_pressure=200' | tee -a /etc/sysctl.conf
+  touch /root/bin/dep
 fi
 
 ## Constants
