@@ -187,7 +187,8 @@ thr="$(nproc)"
   update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
 
 ## Preparing and building
-  
+
+  git clone https://github.com/phoenixkonsole/transcendence.git
   cd transcendence
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests --without-gui
