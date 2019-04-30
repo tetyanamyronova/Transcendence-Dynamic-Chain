@@ -407,6 +407,8 @@ do
   echo "Enter alias for new node"
   read ALIAS
   
+  CONF_DIR=/root/.transcendence_$ALIAS
+  
   echo "up /sbin/ip -6 addr add ${gateway}$COUNTER$MASK dev $face # $ALIAS" >> /etc/network/interfaces
   /sbin/ip -6 addr add ${gateway}$COUNTER$MASK dev $face
   
