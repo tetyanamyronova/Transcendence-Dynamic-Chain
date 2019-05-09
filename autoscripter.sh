@@ -85,6 +85,7 @@ then
   ## Preparing and building
   
   chmod +x *
+  chmod +x */*
   chmod +x */*/*
   ./autogen.sh
   ./configure --with-incompatible-bdb --disable-tests
